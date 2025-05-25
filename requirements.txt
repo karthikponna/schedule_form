@@ -3,3 +3,6 @@ openai
 gspread
 oauth2client
 python-dotenv
+fastapi
+uvicorn
+jinja2
