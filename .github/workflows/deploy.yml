@@ -1,0 +1,17 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Re-create credentials.json from the secret
+      - name: Restore GCP credentials
+        run: |
+          echo "${{ secrets.GCP_SERVICE_ACCOUNT }}" > credentials.json
+      
