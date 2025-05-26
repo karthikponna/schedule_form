@@ -1,10 +1,19 @@
+import os
 from fastapi import FastAPI, Request, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
 from ai_model import classify_business   
-from sheets import add_contact          
+from sheets import add_contact
+from fastapi.staticfiles import StaticFiles     
 
 app = FastAPI()
+BASE_DIR = os.path.dirname(__file__)
+
+app.mount(
+    "/static",
+    StaticFiles(directory=os.path.join(BASE_DIR, "static")),
+    name="static",
+)
 templates = Jinja2Templates(directory="templates")
 
 
@@ -32,7 +41,7 @@ async def post_about(
         
         return templates.TemplateResponse("about.html", {
             "request": request,
-            "warning": "More information is required. Please tell us both what your business is **and** the scale you’re operating at."
+            "warning": "More information is required. Please tell us more about your business and the scale you're operating at."
         })
     else:
         
