@@ -16,7 +16,7 @@ sheet = client.open_by_key("1TgXXMH5jTETg7TgOIf8rRDpG-n1fYc57kQiaa3kMBPQ").sheet
 # print(values_list)
 
 def add_contact(data: dict):
-    # append a timestamp + all fields
+    
     row = [
         datetime.datetime.utcnow().isoformat(),
         data["name"],

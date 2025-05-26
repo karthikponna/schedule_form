@@ -18,23 +18,24 @@ async def post_about(
     request: Request,
     about: str = Form(...)
 ):
-    # 1) classify via OpenAI
+    
     result = classify_business(about)
-    status = result.get("status")       # “qualified” / “not qualified” / “more info”
+    status = result.get("status")       
     if status == "qualified":
-        # show link on same page
+        
         return templates.TemplateResponse("about.html", {
             "request": request,
             "qualified_link": "https://calendar.app.google/h7YFgGZbysv83Bkc7"
         })
+    
     elif status == "more info":
-        # ask user to expand
+        
         return templates.TemplateResponse("about.html", {
             "request": request,
             "warning": "More information is required. Please tell us both what your business is **and** the scale you’re operating at."
         })
     else:
-        # not qualified → redirect to contact form
+        
         response = RedirectResponse(url="/contact", status_code=302)
         return response
 
@@ -69,3 +70,5 @@ async def thank_you(request: Request):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("app:app", host="0.0.0.0", port=8011, reload=True)
+
+# uvicorn app:app --host 0.0.0.0 --port 8000
