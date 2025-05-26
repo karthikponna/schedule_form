@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>About Your Business</title>
+  <title>Business Details</title>
   <style>
     body { font-family: Arial, sans-serif; max-width:600px; margin:2rem auto; padding:1rem; }
     label { display:block; margin-bottom:.5rem; font-weight:bold; }
@@ -15,7 +15,7 @@
   </style>
 </head>
 <body>
-  <h1>Tell Us About Your Business</h1>
+  <h1>Business Details</h1>
 
   {% if warning %}
     <div class="warning">{{ warning }}</div>
@@ -29,7 +29,7 @@
   {% endif %}
 
   <form action="/" method="post">
-    <label for="about">About</label>
+    <label for="about">Description</label>
     <textarea
       id="about"
       name="about"
