@@ -1,11 +1,13 @@
 import os
+import json
 import datetime
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
 scope = ["https://www.googleapis.com/auth/spreadsheets"]
+service_account_info = json.loads(os.environ["GCP_SERVICE_ACCOUNT"])
 
-creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+creds = ServiceAccountCredentials.from_json_keyfile_dict(service_account_info, scope)
 client = gspread.authorize(creds)
 
 sheet = client.open_by_key("1TgXXMH5jTETg7TgOIf8rRDpG-n1fYc57kQiaa3kMBPQ").sheet1

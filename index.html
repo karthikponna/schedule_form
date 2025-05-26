@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Your Business</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width:600px; margin:2rem auto; padding:1rem; }
+    label { display:block; margin-bottom:.5rem; font-weight:bold; }
+    textarea, button { width:100%; padding:.5rem; margin-bottom:1rem; border:1px solid #ccc; border-radius:4px; font-size:1rem; }
+    button { background:#28a745; color:#fff; border:none; cursor:pointer; }
+    button:hover { background:#218838; }
+    .warning { color: #b12; font-weight:bold; margin-bottom:1rem; }
+    .link-box { padding:1rem; background:#eef; border:1px solid #bbe; border-radius:4px; margin-bottom:1rem; }
+  </style>
+</head>
+<body>
+  <h1>Tell Us About Your Business</h1>
+
+  {% if warning %}
+    <div class="warning">{{ warning }}</div>
+  {% endif %}
+
+  {% if qualified_link %}
+    <div class="link-box">
+      Please follow the link to book a call: 
+      <a href="{{ qualified_link }}" target="_blank">{{ qualified_link }}</a>
+    </div>
+  {% endif %}
+
+  <form action="/" method="post">
+    <label for="about">About</label>
+    <textarea
+      id="about"
+      name="about"
+      rows="5"
+      placeholder="Tell us about your business and the scale you're operating at..."
+      required
+    ></textarea>
+    <button type="submit">Submit</button>
+  </form>
+</body>
+</html>
