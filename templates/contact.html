@@ -20,8 +20,19 @@
       margin-bottom: 1rem;
     }
     label { display:block; margin-bottom:.5rem; font-weight:bold; }
-    input, button { width:100%; padding:.5rem; margin-bottom:1rem; border:1px solid #ccc; border-radius:4px; font-size:1rem; }
-    button { background:#007bff; color:#fff; border:none; cursor:pointer; }
+    input {
+      width:100%; padding:.5rem; margin-bottom:.5rem; border:1px solid #ccc; border-radius:4px; font-size:1rem;
+    }
+    button {
+      background:#007bff; color:#fff; border:none; cursor:pointer;
+      border-radius:25px;           
+      padding:.75rem 2rem;          
+      display:inline-block;
+      float:right;                  
+      width:auto;                   
+      font-size:1rem;
+      margin-top:.5rem;
+    }
     button:hover { background:#0056b3; }
   </style>
 </head>
@@ -30,8 +41,12 @@
     <img src="/static/sbl.webp" alt="Company Logo">
   </div>
 
-  <h1>Please leave your details and we'll reach out to you!</h1>
+  <h1>Thanks for showing your interest! We'll reach you out soon :)</h1>
   <form action="/contact" method="post">
+    {% if about and status %}
+      <input type="hidden" name="about" value="{{ about }}" />
+      <input type="hidden" name="status" value="{{ status }}" />
+    {% endif %}
     <label>Name</label>
     <input type="text" name="name" required />
 

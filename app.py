@@ -1,9 +1,11 @@
 import os
+from datetime import datetime
+from urllib.parse import quote_plus 
 from fastapi import FastAPI, Request, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
-from ai_model import classify_business   
-from sheets import add_contact
+from ai_model import classify_business
+from sheets import add_contact, add_user_input_status
 from fastapi.staticfiles import StaticFiles     
 
 app = FastAPI()
@@ -29,29 +31,50 @@ async def post_about(
 ):
     
     result = classify_business(about)
-    status = result.get("status")       
+    status = result.get("status")
+    now = datetime.now().isoformat()
+    add_user_input_status({
+        "Date/Time": now,
+        "User Input": about,
+        "Status": status
+    })
+        
     if status == "qualified":
         
-        return templates.TemplateResponse("about.html", {
-            "request": request,
-            "qualified_link": "https://calendar.app.google/h7YFgGZbysv83Bkc7"
-        })
+        return templates.TemplateResponse("qualified.html", {"request": request})
     
     elif status == "more info":
         
         return templates.TemplateResponse("about.html", {
             "request": request,
-            "warning": "More information is required. Please tell us more about your business and the scale you're operating at."
+            "warning": result.get("message"),
+            "about": about
         })
-    else:
+    elif status == "spam":
+        safe_about = quote_plus(about)
+        safe_status = quote_plus(status)
+        return RedirectResponse(
+            url=f"/contact?about={safe_about}&status={safe_status}",
+            status_code=302
+        )
+    
+    elif status == "not qualified":
         
-        response = RedirectResponse(url="/contact", status_code=302)
-        return response
+        return templates.TemplateResponse("not_qualified.html", {"request": request})
+    
+    else:
+        return RedirectResponse(url="/contact", status_code=302)
 
 
 @app.get("/contact", response_class=HTMLResponse)
 async def get_contact(request: Request):
-    return templates.TemplateResponse("contact.html", {"request": request})
+    about = request.query_params.get("about")
+    status = request.query_params.get("status")
+    return templates.TemplateResponse("contact.html", {
+        "request": request,
+        "about": about,
+        "status": status
+    })
 
 
 @app.post("/contact")
@@ -60,13 +83,16 @@ async def post_contact(
     phone: str = Form(...),
     email: str = Form(...),
     linkedin: str = Form(...),
+    about: str = Form(None),
+    status: str = Form(None),
 ):
-    # store in Google Sheets
+    now = datetime.now().isoformat()
     add_contact({
-        "name": name,
-        "phone": phone,
-        "email": email,
-        "linkedin": linkedin
+        "Date/Time": now,
+        "Name": name,
+        "Phone Number": phone,
+        "Email": email,
+        "Linkedin Profile": linkedin
     })
     return RedirectResponse(url="/thankyou", status_code=302)
 
