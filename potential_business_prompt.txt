@@ -1,6 +1,4 @@
-# ai_model.py 
-
-"""
+SYSTEM_PROMPT = """
 You are a business qualification specialist. Your goal is to determine if a user qualifies as a potential business client based on their user message. You'll be given a user message to analyze for business qualification.
 
 Follow these Conditions:
@@ -70,9 +68,7 @@ MUST RETURN YOUR OUTPUT RESPONSE AS A SINGLE VALID JSON OBJECT ONLY:
 """
 
 
-# User Prompt
-
-"""
+USER_PROMPT = """
 Here is the Data -
 User message: {{userMessage}}
 
