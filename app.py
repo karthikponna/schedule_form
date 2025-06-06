@@ -27,11 +27,21 @@ async def get_about(request: Request):
 @app.post("/", response_class=HTMLResponse)
 async def post_about(
     request: Request,
-    about: str = Form(...)
+    about: str = Form(...),
+    previous: str = Form(None),
 ):
     
-    result = classify_business(about)
-    status = result.get("status")
+    if previous:  # if this is a follow-up (second) attempt
+        combined_input = (
+            f"First user message: {previous}\n"
+            f"Second user message: {about}\n"
+            "Note: This is a follow-up. Do not request more info again—make a final classification."
+        )  
+        result = classify_business(combined_input)  
+        status = result.get("status")
+    else:
+        result = classify_business(about)
+        status = result.get("status")
     now = datetime.now().isoformat()
     add_user_input_status({
         "Date/Time": now,
@@ -60,7 +70,10 @@ async def post_about(
     
     elif status == "not qualified":
         
-        return templates.TemplateResponse("not_qualified.html", {"request": request})
+        return RedirectResponse(
+            url="https://app.secondbrainlabs.com/signup",
+            status_code=302,
+        )
     
     else:
         return RedirectResponse(url="/contact", status_code=302)

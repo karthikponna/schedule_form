@@ -77,7 +77,7 @@
       font-size: 1rem;
       font-family: inherit;
       transition: all 0.1s ease-out; 
-      outline: none; /* Remove default outline */
+      outline: none;
       position: relative;
     }
     .submit-btn:hover { 
@@ -117,6 +117,9 @@
         placeholder="Tell us about yourself, your business and the scale you're operating at..."
         required
       >{{ about | default('') }}</textarea>  <!-- textarea preserved on more-info -->
+      {% if warning %}
+        <input type="hidden" name="previous" value="{{ about }}" />  <!-- added hidden field to pass first message -->
+      {% endif %}
       <button type="submit" class="submit-btn">Submit</button>
     </form>
   </div>

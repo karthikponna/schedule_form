@@ -10,7 +10,7 @@
       background: #ffffff;
       margin: 2rem auto;
       padding: 1rem;
-      max-width: 600px;
+      max-width: 1000px;
       text-align: center;
     }
     .logo-container {
@@ -23,12 +23,46 @@
       height: auto;
       display: inline-block;
     }
+    .content-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 4rem;
+      margin-top: 1.5rem;
+    }
+    .left-section {
+      flex: 1;
+      text-align: left;
+      min-width: 400px;
+    }
+    .left-section h2 {
+      margin: 0 0 1.5rem 0;
+      font-family: "Satoshi", "Satoshi Placeholder", sans-serif;
+      font-size: 1.25rem; /* match button font-size */
+      color: #000;
+      
+    }
+    .calendar-container {
+      width: 100%;
+    }
+    .calendar-container iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+    }
+    .right-section {
+      flex: 0 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-top: 10rem; /* Adjusted margin-top to lower the button */
+    }
     .button-container {
       display: inline-flex;
       flex-direction: column;      
       align-items: stretch;
       gap: 1rem;
-      margin-top: 1.5rem;
+      margin-top: 0;
     }
     .button-container button {
       background: #000;            
@@ -39,11 +73,12 @@
       font-size: 1.25rem;
       cursor: pointer;
       transition: filter 0.2s;
-      width: 100%;
+      width: auto;
       font-family: inherit;
       transition: all 0.1s ease-out; 
-      outline: none; /* Remove default outline */
+      outline: none; 
       position: relative;
+      white-space: nowrap;
     }
     .button-container button:hover {
       filter: brightness(0.85);
@@ -56,13 +91,21 @@
   <div class="logo-container">
     <img src="/static/sbl.webp" alt="Company Logo">
   </div>
-  <div class="button-container">
-    <button class="ceo" onclick="window.location.href='https://calendar.app.google/h7YFgGZbysv83Bkc7'">
-      Book a call with CEO
-    </button>
-    <button class="product" onclick="window.location.href='https://www.linkedin.com/in/shubhamkr-in/'">
-      Try the product for FREE
-    </button>
+
+  <div class="content-container">
+    <div class="left-section">
+      <h2>Book a call with the CEO</h2>
+      <div class="calendar-container">
+        <iframe src="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0LR_skJijdlRM5xHD1PwtevHydbyAldpqpJZHVyZDW9A10dg0GAwT1LRK3cSengHio7jwxpEvB"></iframe>
+      </div>
+    </div>
+    <div class="right-section">
+      <div class="button-container">
+        <button onclick="window.location.href='https://app.secondbrainlabs.com/signup'">
+          Try the product for FREE
+        </button>
+      </div>
+    </div>
   </div>
 </body>
 </html>

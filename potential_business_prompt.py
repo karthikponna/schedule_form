@@ -1,11 +1,3 @@
-import os
-import json
-from dotenv import load_dotenv
-from openai import OpenAI
-
-load_dotenv()
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
 SYSTEM_PROMPT = """
 You are a business qualification specialist. Your goal is to determine if a user qualifies as a potential business client based on their user message. You'll be given a user message to analyze for business qualification.
 
@@ -81,6 +73,7 @@ MUST RETURN YOUR OUTPUT RESPONSE AS A SINGLE VALID JSON OBJECT ONLY:
 
 """
 
+
 USER_PROMPT = """
 Here is the Data -
 User message: {{userMessage}}
@@ -88,23 +81,3 @@ User message: {{userMessage}}
 NOTE: Analyze the user message to determine their business qualification status based on whether they mention their role, business details, and operational scale. Return the appropriate status with a friendly message when more information is needed.
 
 """
-
-def classify_business(text: str) -> dict:
-    prompt = USER_PROMPT.replace("{{userMessage}}", text)
-    resp = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {"role":"system","content":SYSTEM_PROMPT},
-            {"role":"user",  "content":prompt}
-        ],
-        temperature=0.0,
-        max_completion_tokens=100,
-    )
-    raw = resp.choices[0].message.content or ""
-    print("Raw model output:", repr(raw))
-
-    try:
-        return json.loads(raw.strip())
-    except json.JSONDecodeError:
-        print("JSON decode error on:", repr(raw))
-        return {"status":"more info", "message":"Could you share more details about yourself, your business, and the scale you’re operating at… 😊"}
