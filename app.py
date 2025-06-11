@@ -1,5 +1,6 @@
 import os
 from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
 from urllib.parse import quote_plus 
 from fastapi import FastAPI, Request, Form
 from fastapi.templating import Jinja2Templates
@@ -42,7 +43,7 @@ async def post_about(
     else:
         result = classify_business(about)
         status = result.get("status")
-    now = datetime.now(timezone.utc).isoformat()
+    now = datetime.now(ZoneInfo("Asia/Kolkata")).isoformat()
     add_user_input_status({
         "Date/Time": now,
         "User Input": about,
@@ -99,7 +100,7 @@ async def post_contact(
     about: str = Form(None),
     status: str = Form(None),
 ):
-    now = datetime.now(timezone.utc).isoformat()
+    now = datetime.now(ZoneInfo("Asia/Kolkata")).isoformat()
     add_contact({
         "Date/Time": now,
         "Name": name,
