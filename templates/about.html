@@ -85,7 +85,29 @@
       transform: translateY(-2px); 
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
-    
+    .spinner {
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-top: 4px solid #fff;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        animation: spin 1s linear infinite;
+        display: none;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+    @keyframes spin {
+        0% { transform: translate(-50%, -50%) rotate(0deg); }
+        100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+    .submit-btn.loading .button-text {
+        visibility: hidden;
+    }
+    .submit-btn.loading .spinner {
+        display: block;
+    }
     
   </style>
 </head>
@@ -101,14 +123,14 @@
     
 
     {% if about %}
-      <div class="bubble right">{{ about }}</div>  <!-- show user's last message -->
+      <div class="bubble right">{{ about }}</div>  
     {% endif %}
 
     {% if warning %}
-      <div class="bubble left">{{ warning }}</div>  <!-- show LLM response when more info is needed -->
+      <div class="bubble left">{{ warning }}</div>  
     {% endif %}
 
-    <form action="/" method="post">
+    <form action="/" method="post" id="aboutForm">
       <textarea
         id="about"
         name="about"
@@ -116,14 +138,23 @@
         class="input-bubble"
         placeholder="Tell us about yourself, your business and the scale you're operating at..."
         required
-      >{{ about | default('') }}</textarea>  <!-- textarea preserved on more-info -->
+      >{{ about | default('') }}</textarea>  
       {% if warning %}
-        <input type="hidden" name="previous" value="{{ about }}" />  <!-- added hidden field to pass first message -->
+        <input type="hidden" name="previous" value="{{ about }}" />  
       {% endif %}
-      <button type="submit" class="submit-btn">Submit</button>
+      <button type="submit" class="submit-btn" id="submitBtn">
+        <span class="button-text">Submit</span>
+        <div class="spinner"></div>
+      </button>
     </form>
   </div>
+  <script>
+    document.getElementById('aboutForm').addEventListener('submit', function() {
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.classList.add('loading');
+      submitBtn.disabled = true; 
+    });
+  </script>
 </body>
 </html>
 
-<!-- remember-->

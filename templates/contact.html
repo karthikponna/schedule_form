@@ -44,10 +44,33 @@
       margin-top:.5rem;
       font-family: inherit;
       transition: all 0.1s ease-out; 
-      outline: none; /* Remove default outline */
+      outline: none;
       position: relative;
     }
     button:hover { background:#0056b3; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);}
+    .spinner {
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-top: 4px solid #fff;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        animation: spin 1s linear infinite;
+        display: none;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+    @keyframes spin {
+        0% { transform: translate(-50%, -50%) rotate(0deg); }
+        100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+    button.loading .button-text {
+        visibility: hidden;
+    }
+    button.loading .spinner {
+        display: block;
+    }
   </style>
 </head>
 <body>
@@ -56,7 +79,7 @@
   </div>
 
   <h1>Thanks for showing your interest! We'll reach you out soon :)</h1>
-  <form action="/contact" method="post">
+  <form action="/contact" method="post" id="contactForm">
     {% if about and status %}
       <input type="hidden" name="about" value="{{ about }}" />
       <input type="hidden" name="status" value="{{ status }}" />
@@ -73,7 +96,18 @@
     <label>LinkedIn Profile</label>
     <input type="url" name="linkedin" required />
 
-    <button type="submit">Submit</button>
+    <button type="submit" id="submitContactBtn">
+      <span class="button-text">Submit</span>
+      <div class="spinner"></div>
+    </button>
   </form>
+
+  <script>
+    document.getElementById('contactForm').addEventListener('submit', function() {
+      const submitBtn = document.getElementById('submitContactBtn');
+      submitBtn.classList.add('loading');
+      submitBtn.disabled = true; 
+    });
+  </script>
 </body>
 </html>

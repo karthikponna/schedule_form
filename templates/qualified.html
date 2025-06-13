@@ -38,7 +38,7 @@
     .left-section h2 {
       margin: 0 0 1.5rem 0;
       font-family: "Satoshi", "Satoshi Placeholder", sans-serif;
-      font-size: 1.25rem; /* match button font-size */
+      font-size: 1.25rem;
       color: #000;
       
     }
@@ -55,7 +55,7 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      margin-top: 10rem; /* Adjusted margin-top to lower the button */
+      margin-top: 10rem; 
     }
     .button-container {
       display: inline-flex;
@@ -85,6 +85,30 @@
       transform: translateY(-2px); 
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
+
+    .spinner {
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-top: 4px solid #fff;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        animation: spin 1s linear infinite;
+        display: none;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+    @keyframes spin {
+        0% { transform: translate(-50%, -50%) rotate(0deg); }
+        100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+    .button-container button.loading .button-text {
+        visibility: hidden;
+    }
+    .button-container button.loading .spinner {
+        display: block;
+    }
   </style>
 </head>
 <body>
@@ -101,11 +125,24 @@
     </div>
     <div class="right-section">
       <div class="button-container">
-        <button onclick="window.location.href='https://app.secondbrainlabs.com/signup'">
-          Try the product for FREE
+        <button id="signupBtn">
+          <span class="button-text">Try the product for FREE</span>
+          <div class="spinner"></div>
         </button>
       </div>
     </div>
   </div>
+
+  <script>
+    document.getElementById('signupBtn').addEventListener('click', function(event) {
+      const button = event.target;
+      button.classList.add('loading');
+      button.disabled = true; 
+      
+      setTimeout(() => {
+        window.location.href = 'https://app.secondbrainlabs.com/signup';
+      }, 100); 
+    });
+  </script>
 </body>
 </html>
